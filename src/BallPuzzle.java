@@ -3,7 +3,7 @@
  Program Name: Ball Puzzle
 
  Description: The user will control a small ball through level using the arrow keys.
-                The user will progressivly encounter harder levels with different
+                The user will progressively encounter harder levels with different
                 combinations of 4 special squares. The user will have to get
                 the ball to an endpoint to finish the level.
 
@@ -14,16 +14,18 @@
  End: Tuesday, June 4, 2019
  */
 
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.*;
-import java.awt.Robot;
-import java.awt.AWTException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import javax.swing.border.TitledBorder;
 
 
 public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
@@ -108,10 +110,6 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         }
     };
 
-    public static void main(String args[]) {
-        new BallPuzzle();
-    }
-
     //Start of Constructor method
     BallPuzzle() {
 
@@ -134,7 +132,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         splashScreenImage.setOpaque(true);
         splashScreenImage.setForeground(Color.BLACK);
 
-        //Timer to control the visibility time of the spash screen
+        //Timer to control the visibility time of the splash screen
         Timer splashScreenTimer = new Timer();
         TimerTask splashScreen = new TimerTask() {
             int seconds = 0;
@@ -187,7 +185,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         //Starting splash screen timer
         splashScreenTimer.scheduleAtFixedRate(splashScreen, 0, 1000);
 
-        //Startin color cycle timer
+        //Starting color cycle timer
         alphaCycleTimer.scheduleAtFixedRate(alphaCycle, 0, 6);
 
         //Creating title frame
@@ -209,6 +207,10 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         ball.validate();
         ball.repaint();
 
+    }
+
+    public static void main(String[] args) {
+        new BallPuzzle();
     }
 
     //**************************************************************************
@@ -255,10 +257,10 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         levelSelectButton.setPreferredSize(new Dimension(300, 60));
 
         //Aligning Menu Buttons
-        startButton.setAlignmentX(menuBoxLayout.CENTER_ALIGNMENT);
-        instructionsButton.setAlignmentX(menuBoxLayout.CENTER_ALIGNMENT);
-        exitButton.setAlignmentX(menuBoxLayout.CENTER_ALIGNMENT);
-        aboutButton.setAlignmentX(menuBoxLayout.CENTER_ALIGNMENT);
+        startButton.setAlignmentX(CENTER_ALIGNMENT);
+        instructionsButton.setAlignmentX(CENTER_ALIGNMENT);
+        exitButton.setAlignmentX(CENTER_ALIGNMENT);
+        aboutButton.setAlignmentX(CENTER_ALIGNMENT);
 
         //Adding Action Listeners to buttons
         startButton.addActionListener(this);
@@ -268,16 +270,10 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         exitButton.addActionListener(this);
 
         //Adding and organizing spacing for Menu buttons
-        menuBoxLayout.add(Box.createRigidArea(new Dimension(100000000, 25)));
-        menuBoxLayout.add(startButton);
-        menuBoxLayout.add(Box.createRigidArea(new Dimension(100000000, 25)));
-        menuBoxLayout.add(levelSelectButton);
-        menuBoxLayout.add(Box.createRigidArea(new Dimension(100000000, 25)));
-        menuBoxLayout.add(instructionsButton);
-        menuBoxLayout.add(Box.createRigidArea(new Dimension(100000000, 25)));
-        menuBoxLayout.add(aboutButton);
-        menuBoxLayout.add(Box.createRigidArea(new Dimension(100000000, 25)));
-        menuBoxLayout.add(exitButton);
+        for (JButton jButton : Arrays.asList(startButton, levelSelectButton, instructionsButton, aboutButton, exitButton)) {
+            menuBoxLayout.add(Box.createRigidArea(new Dimension(100000000, 25)));
+            menuBoxLayout.add(jButton);
+        }
         menuBoxLayout.add(Box.createRigidArea(new Dimension(100000000, 25)));
 
         //Implementing spacer dimensions to menu screen
@@ -430,57 +426,38 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         instructionsButtonPanel.add(exitButton, BorderLayout.EAST);
 
         //Creating Instructions text
-        JTextArea instructions = new JTextArea("Welcome to Ball Puzzle! To start"
-                + " off the program, just click on the 'Start' button on the "
-                + "menu screen. (You may also select what level you would like "
-                + "to start on by clicking level select.) Ball Puzzle is an easy"
-                + " to learn, yet hard to master game. \n\n"
-                + ""
-                + "The aim of this game is "
-                + "to get the RED BALL to the GREEN FINISH SQUARE in each "
-                + "level, 10 levels total. You will control the direction of the ball "
-                + "using the arrow keys on your keyboard, with unlimited moves. "
-                + "Once in motion, the ball will not stop until it comes into "
-                + "contact with certian squares. There are"
-                + " 4 special squares in this game: \n"
-                + ""
-                + "The DARK BLUE SQUARES are unpassable, "
-                + "and will stop the ball coming from any direction. \n\n"
-                + ""
-                + "The GREEN SQUARES are the finish points - you will have to "
-                + "reach them to finish the level. \n\n"
-                + ""
-                + "The ORANGE SQUARES are Portals. They are "
-                + "always linked to eachother, and there will never be more than "
-                + "one set. When the ball enters one ORANGE SQUARE, it will "
-                + "continue in the same direction out of the other ORANGE SQUARE."
-                + "\n\n"
-                + ""
-                + "Finally, the BLACK SQUARES WITH PINK TRIANGLES are One Ways."
-                + " There are 4 kinds of this square, each with a PINK TRIANGLE "
-                + "facing a different direction. The ball can only pass through "
-                + "these squares in the direction the PINK TRIANGLE'S point is "
-                + "pointing. (The ball will pass through as long as it is coming "
-                + "from the PINK SIDE)\n\n"
-                + ""
-                + "In any level, you may press "
-                + "the ESCAPE key on your keyboard to pause, and bring up the "
-                + "level number, the meaning of each square, and an option to "
-                + "exit, restart or return to the menu. KEEP IN MIND: You can "
-                + "only pause when the ball ISN'T moving. This is due to the way "
-                + "the program was designed (It checks the color of the pixels on"
-                + " your screen) "
-                + "This means that it is very important to have the Puzzle Screen "
-                + "always ontop, or at the very front of your computer screen with no "
-                + "overlapping screens/GUIs. This prevents any unintentional "
-                + "movement of the ball. Thank you for understanding.\n\n"
-                + ""
-                + "To reset the ball in "
-                + "any level, just press the spacebar ONCE. If pressed more than"
-                + " once, or by chance, the direction key you wish the ball to "
-                + "move in will have to be pressed twice in a row. Please "
-                + "reference the user manual for more information, and have a "
-                + "great day!");
+        JTextArea instructions = new JTextArea("""
+                Welcome to Ball Puzzle! To start off the program, just click on the 'Start' button on the menu screen.
+                 (You may also select what level you would like to start on by clicking level select.)\040
+                 Ball Puzzle is an easy to learn, yet hard to master game.\s
+
+                The aim of this game is to get the RED BALL to the GREEN FINISH SQUARE in each level, 10 levels total.\040
+                You will control the direction of the ball using the arrow keys on your keyboard, with unlimited moves.\040
+                Once in motion, the ball will not stop until it comes into contact with certain squares.\040
+                There are 4 special squares in this game:\s
+                The DARK BLUE SQUARES are unpassable, and will stop the ball coming from any direction.\s
+
+                The GREEN SQUARES are the finish points - you will have to reach them to finish the level.\s
+
+                The ORANGE SQUARES are Portals. They are always linked to each other, and there will never be more than\040
+                one set. When the ball enters one ORANGE SQUARE, it will continue in the same direction out of the other\040
+                ORANGE SQUARE.
+
+                Finally, the BLACK SQUARES WITH PINK TRIANGLES are One Ways. There are 4 kinds of this square, each with\040
+                a PINK TRIANGLE facing a different direction. The ball can only pass through these squares in the\040
+                direction the PINK TRIANGLE'S point is pointing. (The ball will pass through as long as it is coming\040
+                from the PINK SIDE)
+
+                In any level, you may press the ESCAPE key on your keyboard to pause, and bring up the level number,\040
+                the meaning of each square, and an option to exit, restart or return to the menu. KEEP IN MIND: You can\040
+                only pause when the ball ISN'T moving. This is due to the way the program was designed (It checks the\040
+                color of the pixels on your screen) This means that it is very important to have the Puzzle Screen\040
+                always on top, or at the very front of your computer screen with no overlapping screens/GUIs.\040
+                This prevents any unintentional movement of the ball. Thank you for understanding.
+
+                To reset the ball in any level, just press the spacebar ONCE. If pressed more than once, or by chance,\040
+                the direction key you wish the ball to move in will have to be pressed twice in a row. Please reference\040
+                the user manual for more information, and have a great day!""");
 
         //Editing Instructions Text
         instructions.setLineWrap(true);
@@ -545,16 +522,20 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         aboutButtonsPanel.add(exitButton, BorderLayout.EAST);
 
         //Creating About text
-        JTextArea about = new JTextArea("This Program was created by Samuel Catania\n\n"
-                + "Samuel is a grade 11 student at Ursula Franklin Academy. "
-                + "This is his second year taking a Computer Sciences course.\n\n"
-                + "If you have any questions/comments/concerns, please, feel "
-                + "free to contact Sam at the address below:\n\n"
-                + "samuel.catania@student.tdsb.on.ca\n\n"
-                + "Have a great day!\n\n"
-                + "Last Updated: 6/3/19\n"
-                + "Version 1.2\n"
-                + "©2019 Sam Cat Inc. ");
+        JTextArea about = new JTextArea("""
+                This Program was created by Samuel Catania
+
+                Samuel is a grade 11 student at Ursula Franklin Academy. This is his second year taking a Computer Sciences course.
+
+                If you have any questions/comments/concerns, please, feel free to contact Sam at the address below:
+
+                samuel.catania@student.tdsb.on.ca
+
+                Have a great day!
+
+                Last Updated: 6/3/19
+                Version 1.2
+                ©2019 Sam Cat Inc.\s""");
 
         //Editing About Text
         about.setLineWrap(true);
@@ -565,14 +546,14 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         //Creating a scroll feature for the about screen
         JScrollPane aboutScrollPane = new JScrollPane(about);
 
-        //Creating the about panel
+        //Creating about panel
         aboutPanel.add(aboutScreenTitle, BorderLayout.NORTH);
         aboutPanel.add(aboutButtonsPanel, BorderLayout.SOUTH);
         aboutPanel.add(aboutScrollPane, BorderLayout.CENTER);
         aboutPanel.add(aboutSpacer1, BorderLayout.WEST);
         aboutPanel.add(aboutSpacer2, BorderLayout.EAST);
 
-        //Creating the about frame
+        //Creating about frame
         aboutFrame.add(aboutPanel);
         aboutFrame.setSize(750, 750);
         aboutFrame.setVisible(false);
@@ -585,163 +566,110 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getActionCommand().equals("Start")) {
-
-            levelFrame.setVisible(true);
-
-            menuFrame.setVisible(false);
-
-            ball.level = 1;
-
-            ball.repaint();
-
-        } else if (e.getActionCommand().equals("Instructions")) {
-
-            instructionsFrame.setVisible(true);
-            menuFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Exit")) {
-
-            int x = JOptionPane.showConfirmDialog(null, "Are you sure you want to Exit?", "Exit", JOptionPane.YES_NO_OPTION);
-
-            while (x == 0) {
-
-                System.exit(0);
-
+        switch (e.getActionCommand()) {
+            case "Start" -> {
+                levelFrame.setVisible(true);
+                menuFrame.setVisible(false);
+                ball.level = 1;
+                ball.repaint();
             }
+            case "Instructions" -> {
+                instructionsFrame.setVisible(true);
+                menuFrame.setVisible(false);
+            }
+            case "Exit" -> {
+                int x = JOptionPane.showConfirmDialog(null, "Are you sure you want to Exit?", "Exit", JOptionPane.YES_NO_OPTION);
+                if (x == 0) {
 
-        } else if (e.getActionCommand().equals("About")) {
+                    System.exit(0);
 
-            aboutFrame.setVisible(true);
-            menuFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Menu")) {
-
-            menuFrame.setVisible(true);
-
-            instructionsFrame.setVisible(false);
-
-            titleFrame.setVisible(false);
-
-            aboutFrame.setVisible(false);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Select")) {
-
-            levelSelectFrame.setVisible(true);
-
-            menuFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level One")) {
-
-            ball.level = 1;
-
-            ball.positionX = 100;
-            ball.positionY = 450;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Two")) {
-
-            ball.level = 2;
-
-            ball.positionX = 350;
-            ball.positionY = 450;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Three")) {
-
-            ball.level = 3;
-
-            ball.positionX = 100;
-            ball.positionY = 100;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Four")) {
-
-            ball.level = 4;
-
-            ball.positionX = 100;
-            ball.positionY = 100;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Five")) {
-
-            ball.level = 5;
-
-            ball.positionX = 100;
-            ball.positionY = 100;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Six")) {
-
-            ball.level = 6;
-
-            ball.positionX = 350;
-            ball.positionY = 500;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Seven")) {
-
-            ball.level = 7;
-
-            ball.positionX = 100;
-            ball.positionY = 100;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Eight")) {
-
-            ball.level = 8;
-
-            ball.positionX = 250;
-            ball.positionY = 750;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Nine")) {
-
-            ball.level = 9;
-
-            ball.positionX = 500;
-            ball.positionY = 550;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
-
-        } else if (e.getActionCommand().equals("Level Ten")) {
-
-            ball.level = 10;
-
-            ball.positionX = 100;
-            ball.positionY = 100;
-
-            levelFrame.setVisible(true);
-
-            levelSelectFrame.setVisible(false);
+                }
+            }
+            case "About" -> {
+                aboutFrame.setVisible(true);
+                menuFrame.setVisible(false);
+            }
+            case "Menu" -> {
+                menuFrame.setVisible(true);
+                instructionsFrame.setVisible(false);
+                titleFrame.setVisible(false);
+                aboutFrame.setVisible(false);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Select" -> {
+                levelSelectFrame.setVisible(true);
+                menuFrame.setVisible(false);
+            }
+            case "Level One" -> {
+                ball.level = 1;
+                ball.positionX = 100;
+                ball.positionY = 450;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Two" -> {
+                ball.level = 2;
+                ball.positionX = 350;
+                ball.positionY = 450;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Three" -> {
+                ball.level = 3;
+                ball.positionX = 100;
+                ball.positionY = 100;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Four" -> {
+                ball.level = 4;
+                ball.positionX = 100;
+                ball.positionY = 100;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Five" -> {
+                ball.level = 5;
+                ball.positionX = 100;
+                ball.positionY = 100;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Six" -> {
+                ball.level = 6;
+                ball.positionX = 350;
+                ball.positionY = 500;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Seven" -> {
+                ball.level = 7;
+                ball.positionX = 100;
+                ball.positionY = 100;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Eight" -> {
+                ball.level = 8;
+                ball.positionX = 250;
+                ball.positionY = 750;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Nine" -> {
+                ball.level = 9;
+                ball.positionX = 500;
+                ball.positionY = 550;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
+            case "Level Ten" -> {
+                ball.level = 10;
+                ball.positionX = 100;
+                ball.positionY = 100;
+                levelFrame.setVisible(true);
+                levelSelectFrame.setVisible(false);
+            }
         }
     }
 
@@ -756,7 +684,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
         switch (e.getKeyCode()) {
 
             case KeyEvent.VK_RIGHT:
-                if (moving == false) {
+                if (!moving) {
                     moving = true;
 
                     Timer timer = new Timer();
@@ -772,7 +700,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 int x = ball.positionX / 2 + 26;
 
                                 if (tracing) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("X: " + ball.positionX);
                                     System.out.println("Y: " + ball.positionY);
                                 }
@@ -780,7 +708,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 color = robot.getPixelColor(x, y);
 
                                 if (tracing) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("Red   = " + color.getRed());
                                     System.out.println("Green = " + color.getGreen());
                                     System.out.println("Blue  = " + color.getBlue());
@@ -806,42 +734,32 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 timer.cancel();
                                 moving = false;
                                 switch (ball.level) {
-                                    case 1:
+                                    case 1 -> {
                                         ball.positionX = 350;
                                         ball.positionY = 450;
-                                        break;
-                                    case 2:
+                                    }
+                                    case 2, 3, 4, 6, 9 -> {
                                         ball.positionX = 100;
                                         ball.positionY = 100;
-                                        break;
-                                    case 3:
-                                    case 4:
-                                    case 6:
-                                        ball.positionX = 100;
-                                        ball.positionY = 100;
-                                        break;
-                                    case 5:
+                                    }
+                                    case 5 -> {
                                         ball.positionX = 350;
                                         ball.positionY = 500;
-                                        break;
-                                    case 7:
+                                    }
+                                    case 7 -> {
                                         ball.positionX = 250;
                                         ball.positionY = 750;
-                                        break;
-                                    case 8:
+                                    }
+                                    case 8 -> {
                                         ball.positionX = 500;
                                         ball.positionY = 550;
-                                        break;
-                                    case 9:
-                                        ball.positionX = 100;
-                                        ball.positionY = 100;
-                                        break;
-                                    default:
+                                    }
+                                    default -> {
                                         Object[] options = {"Restart", "Menu", "Exit"};
                                         int a = JOptionPane.showOptionDialog(levelFrame, "What do you want to do?", "Great Job! You won!",
                                                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
                                         if (tracing) {
-                                            System.out.println("");
+                                            System.out.println();
                                             System.out.println("Finished Choice: " + a);
                                         }
                                         if (a == 0) {
@@ -858,7 +776,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                         if (a == 2) {
                                             System.exit(0);
                                         }
-                                        break;
+                                    }
                                 }
                                 ball.level++;
                                 ball.repaint();
@@ -872,12 +790,12 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 }
                                 ball.repaint();
                             } else {
-                                if (stopRight == true && (color.getRed() == 0) && (color.getGreen() == 0) && (color.getBlue() == 0)) {
+                                if (stopRight && (color.getRed() == 0) && (color.getGreen() == 0) && (color.getBlue() == 0)) {
                                     timer.cancel();
                                     moving = false;
                                 } else {
                                     if (tracing) {
-                                        System.out.println("");
+                                        System.out.println();
                                         System.out.println("StopRight: " + stopRight);
                                     }
                                     ball.positionX += 5;
@@ -897,7 +815,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                 break;
 
             case KeyEvent.VK_UP:
-                if (moving == false) {
+                if (!moving) {
                     moving = true;
                     Timer timer = new Timer();
 
@@ -911,7 +829,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 int x = ball.positionX / 2 + 12;
 
                                 if (tracing) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("X: " + ball.positionX);
                                     System.out.println("Y: " + ball.positionY);
                                 }
@@ -919,7 +837,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 color = robot.getPixelColor(x, y);
 
                                 if (tracing) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("Red   = " + color.getRed());
                                     System.out.println("Green = " + color.getGreen());
                                     System.out.println("Blue  = " + color.getBlue());
@@ -945,42 +863,32 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 timer.cancel();
                                 moving = false;
                                 switch (ball.level) {
-                                    case 1:
+                                    case 1 -> {
                                         ball.positionX = 350;
                                         ball.positionY = 450;
-                                        break;
-                                    case 2:
+                                    }
+                                    case 2, 9, 3, 4, 6 -> {
                                         ball.positionX = 100;
                                         ball.positionY = 100;
-                                        break;
-                                    case 3:
-                                    case 4:
-                                    case 6:
-                                        ball.positionX = 100;
-                                        ball.positionY = 100;
-                                        break;
-                                    case 5:
+                                    }
+                                    case 5 -> {
                                         ball.positionX = 350;
                                         ball.positionY = 500;
-                                        break;
-                                    case 7:
+                                    }
+                                    case 7 -> {
                                         ball.positionX = 250;
                                         ball.positionY = 750;
-                                        break;
-                                    case 8:
+                                    }
+                                    case 8 -> {
                                         ball.positionX = 500;
                                         ball.positionY = 550;
-                                        break;
-                                    case 9:
-                                        ball.positionX = 100;
-                                        ball.positionY = 100;
-                                        break;
-                                    default:
+                                    }
+                                    default -> {
                                         Object[] options = {"Restart", "Menu", "Exit"};
                                         int a = JOptionPane.showOptionDialog(levelFrame, "What do you want to do?", "Great Job! You won!",
                                                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
                                         if (tracing) {
-                                            System.out.println("");
+                                            System.out.println();
                                             System.out.println("Finished Choice: " + a);
                                         }
                                         if (a == 0) {
@@ -997,7 +905,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                         if (a == 2) {
                                             System.exit(0);
                                         }
-                                        break;
+                                    }
                                 }
                                 ball.level++;
                                 ball.repaint();
@@ -1011,12 +919,12 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 }
                                 ball.repaint();
                             } else {
-                                if (stopUp == true && (color.getRed() == 0) && (color.getGreen() == 0) && (color.getBlue() == 0)) {
+                                if (stopUp && (color.getRed() == 0) && (color.getGreen() == 0) && (color.getBlue() == 0)) {
                                     timer.cancel();
                                     moving = false;
                                 } else {
                                     if (tracing) {
-                                        System.out.println("");
+                                        System.out.println();
                                         System.out.println("StopUp: " + stopUp);
                                     }
                                     ball.positionY -= 5;
@@ -1034,7 +942,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                if (moving == false) {
+                if (!moving) {
                     moving = true;
                     Timer timer = new Timer();
                     TimerTask moveLeft = new TimerTask() {
@@ -1047,7 +955,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 int x = ball.positionX / 2 - 1;
 
                                 if (tracing) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("X: " + ball.positionX);
                                     System.out.println("Y: " + ball.positionY);
                                 }
@@ -1055,7 +963,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 color = robot.getPixelColor(x, y);
 
                                 if (tracing) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("Red   = " + color.getRed());
                                     System.out.println("Green = " + color.getGreen());
                                     System.out.println("Blue  = " + color.getBlue());
@@ -1082,42 +990,32 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 timer.cancel();
                                 moving = false;
                                 switch (ball.level) {
-                                    case 1:
+                                    case 1 -> {
                                         ball.positionX = 350;
                                         ball.positionY = 450;
-                                        break;
-                                    case 2:
+                                    }
+                                    case 2, 3, 4, 6, 9 -> {
                                         ball.positionX = 100;
                                         ball.positionY = 100;
-                                        break;
-                                    case 3:
-                                    case 4:
-                                    case 6:
-                                        ball.positionX = 100;
-                                        ball.positionY = 100;
-                                        break;
-                                    case 5:
+                                    }
+                                    case 5 -> {
                                         ball.positionX = 350;
                                         ball.positionY = 500;
-                                        break;
-                                    case 7:
+                                    }
+                                    case 7 -> {
                                         ball.positionX = 250;
                                         ball.positionY = 750;
-                                        break;
-                                    case 8:
+                                    }
+                                    case 8 -> {
                                         ball.positionX = 500;
                                         ball.positionY = 550;
-                                        break;
-                                    case 9:
-                                        ball.positionX = 100;
-                                        ball.positionY = 100;
-                                        break;
-                                    default:
+                                    }
+                                    default -> {
                                         Object[] options = {"Restart", "Menu", "Exit"};
                                         int a = JOptionPane.showOptionDialog(levelFrame, "What do you want to do?", "Great Job! You won!",
                                                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
                                         if (tracing) {
-                                            System.out.println("");
+                                            System.out.println();
                                             System.out.println("Finished Choice: " + a);
                                         }
                                         if (a == 0) {
@@ -1134,7 +1032,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                         if (a == 2) {
                                             System.exit(0);
                                         }
-                                        break;
+                                    }
                                 }
                                 ball.level++;
                                 ball.repaint();
@@ -1148,12 +1046,12 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 }
                                 ball.repaint();
                             } else {
-                                if (stopLeft == true && (color.getRed() == 0) && (color.getGreen() == 0) && (color.getBlue() == 0)) {
+                                if (stopLeft && (color.getRed() == 0) && (color.getGreen() == 0) && (color.getBlue() == 0)) {
                                     timer.cancel();
                                     moving = false;
                                 } else {
                                     if (tracing) {
-                                        System.out.println("");
+                                        System.out.println();
                                         System.out.println("StopLeft: " + stopLeft);
                                     }
                                     ball.positionX -= 5;
@@ -1171,7 +1069,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                 }
                 break;
             case KeyEvent.VK_DOWN:
-                if (moving == false) {
+                if (!moving) {
                     moving = true;
                     Timer timer = new Timer();
                     TimerTask moveDown = new TimerTask() {
@@ -1184,7 +1082,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 int x = ball.positionX / 2 + 12;
 
                                 if (tracing) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("X: " + ball.positionX);
                                     System.out.println("Y: " + ball.positionY);
                                 }
@@ -1192,7 +1090,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 color = robot.getPixelColor(x, y);
 
                                 if (tracing) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("Red   = " + color.getRed());
                                     System.out.println("Green = " + color.getGreen());
                                     System.out.println("Blue  = " + color.getBlue());
@@ -1218,42 +1116,32 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 timer.cancel();
                                 moving = false;
                                 switch (ball.level) {
-                                    case 1:
+                                    case 1 -> {
                                         ball.positionX = 350;
                                         ball.positionY = 450;
-                                        break;
-                                    case 2:
+                                    }
+                                    case 2, 3, 4, 6, 9 -> {
                                         ball.positionX = 100;
                                         ball.positionY = 100;
-                                        break;
-                                    case 3:
-                                    case 4:
-                                    case 6:
-                                        ball.positionX = 100;
-                                        ball.positionY = 100;
-                                        break;
-                                    case 5:
+                                    }
+                                    case 5 -> {
                                         ball.positionX = 350;
                                         ball.positionY = 500;
-                                        break;
-                                    case 7:
+                                    }
+                                    case 7 -> {
                                         ball.positionX = 250;
                                         ball.positionY = 750;
-                                        break;
-                                    case 8:
+                                    }
+                                    case 8 -> {
                                         ball.positionX = 500;
                                         ball.positionY = 550;
-                                        break;
-                                    case 9:
-                                        ball.positionX = 100;
-                                        ball.positionY = 100;
-                                        break;
-                                    default:
+                                    }
+                                    default -> {
                                         Object[] options = {"Restart", "Menu", "Exit"};
                                         int a = JOptionPane.showOptionDialog(levelFrame, "What do you want to do?", "Great Job! You won!",
                                                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
                                         if (tracing) {
-                                            System.out.println("");
+                                            System.out.println();
                                             System.out.println("Finished Choice: " + a);
                                         }
                                         if (a == 0) {
@@ -1270,7 +1158,7 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                         if (a == 2) {
                                             System.exit(0);
                                         }
-                                        break;
+                                    }
                                 }
                                 ball.level++;
                                 ball.repaint();
@@ -1284,12 +1172,12 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                                 }
                                 ball.repaint();
                             } else {
-                                if (stopDown == true && (color.getRed() == 0) && (color.getGreen() == 0) && (color.getBlue() == 0)) {
+                                if (stopDown && (color.getRed() == 0) && (color.getGreen() == 0) && (color.getBlue() == 0)) {
                                     timer.cancel();
                                     moving = false;
                                 } else {
                                     if (tracing) {
-                                        System.out.println("");
+                                        System.out.println();
                                         System.out.println("StopDown: " + stopDown);
                                     }
                                     ball.positionY += 5;
@@ -1309,58 +1197,53 @@ public class BallPuzzle extends JFrame implements KeyListener, ActionListener {
                 break;
             case KeyEvent.VK_SPACE:
                 switch (ball.level) {
-                    case 2:
+                    case 2 -> {
                         ball.positionX = 350;
                         ball.positionY = 450;
-                        break;
-                    case 3:
+                    }
+                    case 3, 4, 5, 7, 10 -> {
                         ball.positionX = 100;
                         ball.positionY = 100;
-                        break;
-                    case 4:
-                    case 5:
-                    case 7:
-                        ball.positionX = 100;
-                        ball.positionY = 100;
-                        break;
-                    case 6:
+                    }
+                    case 6 -> {
                         ball.positionX = 350;
                         ball.positionY = 500;
-                        break;
-                    case 8:
+                    }
+                    case 8 -> {
                         ball.positionX = 250;
                         ball.positionY = 750;
-                        break;
-                    case 9:
+                    }
+                    case 9 -> {
                         ball.positionX = 500;
                         ball.positionY = 550;
-                        break;
-                    case 10:
-                        ball.positionX = 100;
-                        ball.positionY = 100;
-                        break;
-                    default:
+                    }
+                    default -> {
                         ball.positionX = 100;
                         ball.positionY = 450;
-                        break;
+                    }
                 }
                 ball.repaint();
                 space = true;
                 break;
             case KeyEvent.VK_ESCAPE:
-                if (moving == false) {
+                if (!moving) {
                     Object[] options = {"Restart", "Menu", "Exit"};
-                    int a = JOptionPane.showOptionDialog(levelFrame, "Use the arrow keys to move the ball to the GREEN FINISH SQUARE.\n\n"
-                                    + "DARK BLUE SQUARES are unpassable.\n\n"
-                                    + "GREEN SQUARES are the finish points.\n\n"
-                                    + "ORANGE SQUARES are Portals.\n\n"
-                                    + "BLACK SQUARES WITH PINK TRIANGLES are One Ways.\n"
-                                    + "(The ball will pass through as long as it is coming "
-                                    + "from the PINK SIDE)\n\n"
-                                    + "Press ESCAPE to resume.", "Paused - Level " + ball.level,
+                    int a = JOptionPane.showOptionDialog(levelFrame, """
+                                    Use the arrow keys to move the ball to the GREEN FINISH SQUARE.
+
+                                    DARK BLUE SQUARES are unpassable.
+
+                                    GREEN SQUARES are the finish points.
+
+                                    ORANGE SQUARES are Portals.
+
+                                    BLACK SQUARES WITH PINK TRIANGLES are One Ways.
+                                    (The ball will pass through as long as it is coming from the PINK SIDE)
+
+                                    Press ESCAPE to resume.""", "Paused - Level " + ball.level,
                             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
                     if (tracing) {
-                        System.out.println("");
+                        System.out.println();
                         System.out.println("Paused Choice: " + a);
                     }
                     if (a == 0) {
